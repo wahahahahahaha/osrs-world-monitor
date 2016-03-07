@@ -16,7 +16,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("app.fxml"));
-        primaryStage.setTitle("OSRS World Tracker");
+        primaryStage.setTitle("OSRS World Population Monitor");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("globe.gif")));
