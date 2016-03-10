@@ -16,21 +16,8 @@ public class App extends Application {
         launch(args);
     }
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("app.fxml"));
-        primaryStage.setTitle("OSRS World Population Monitor");
-        primaryStage.setScene(new Scene(root));
-        primaryStage.show();
-        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("globe.gif")));
-        primaryStage.setOnCloseRequest(event -> System.exit(0));
-    }
-
     public static void connectIRC(String server, int port, String nickname) {
-        irc =  new IRCObservable();
-        irc.setServer(server);
-        irc.setPort(port);
-        irc.setNickname(nickname);
+        irc = new IRCObservable(server, port, nickname);
         irc.start();
     }
 
@@ -40,6 +27,16 @@ public class App extends Application {
 
     public static void sendMessageIRC(String channel, String message) {
         irc.sendMessage(channel, message);
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("app.fxml"));
+        primaryStage.setTitle("OSRS World Population Monitor");
+        primaryStage.setScene(new Scene(root));
+        primaryStage.show();
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("globe.gif")));
+        primaryStage.setOnCloseRequest(event -> System.exit(0));
     }
 
 }
