@@ -53,8 +53,6 @@ public class Controller implements Initializable {
             e.printStackTrace();
         }
 
-        IRCObservable irc = new IRCObservable();
-
         LinkedList<String> changes = new LinkedList<>();
         PopulationObservable worldTracker = new PopulationObservable();
         worldTracker.addObserver((o, world, change) -> {
@@ -67,33 +65,39 @@ public class Controller implements Initializable {
                 changes.pollLast();
             }
             Platform.runLater(() -> {
-                irc.sendMessage(channelField.getText().trim(), changes.peekFirst());
+                App.sendMessageIRC(channelField.getText().trim(), changes.peekFirst());
                 trackerListView.setItems(FXCollections.observableArrayList(changes));
             });
         });
         worldTracker.start();
-        worldTracker.pauseTracking();
 
         connectButton.setOnAction(event -> {
             if (connectButton.getText().equals("Connect")) {
+                System.out.println("Connecting...");
+                connectButton.setText("Disconnect");
                 try {
                     saveIRCProperties();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                irc.setServer(serverField.getText().trim());
-                irc.setPort(Integer.parseInt(portField.getText().trim()));
-                irc.setNickname(nicknameField.getText().trim());
-                irc.start();
+                App.connectIRC(
+                        serverField.getText().trim(),
+                        Integer.parseInt(portField.getText().trim()),
+                        nicknameField.getText().trim()
+                );
                 worldTracker.resumeTracking();
                 serverField.setEditable(false);
                 portField.setEditable(false);
                 nicknameField.setEditable(false);
                 channelField.setEditable(false);
             } else {
-                System.exit(0);
+                App.disconnectIRC();
+                serverField.setEditable(true);
+                portField.setEditable(true);
+                nicknameField.setEditable(true);
+                channelField.setEditable(true);
+                connectButton.setText("Connect");
             }
-            connectButton.setText("Disconnect");
         });
 
         pauseButton.setOnAction(event -> {

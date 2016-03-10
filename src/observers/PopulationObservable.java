@@ -92,7 +92,7 @@ public class PopulationObservable extends Thread {
             }
             Map<Integer, World> currentWorlds = getWorlds();
             for (Integer world : currentWorlds.keySet()) {
-                if (Math.abs(currentWorlds.get(world).getPlayers() - previousWorlds.get(world).getPlayers()) >= 12) {
+                if (Math.abs(currentWorlds.get(world).getPlayers() - previousWorlds.get(world).getPlayers()) >= 13) {
                     setChanged();
                     notifyObservers(currentWorlds.get(world), (currentWorlds.get(world).getPlayers() - previousWorlds.get(world).getPlayers()));
                 }

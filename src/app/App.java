@@ -6,8 +6,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import observers.IRCObservable;
 
-public class Main extends Application {
+public class App extends Application {
+
+    private static IRCObservable irc = null;
 
     public static void main(String[] args) {
         launch(args);
@@ -21,6 +24,22 @@ public class Main extends Application {
         primaryStage.show();
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("globe.gif")));
         primaryStage.setOnCloseRequest(event -> System.exit(0));
+    }
+
+    public static void connectIRC(String server, int port, String nickname) {
+        irc =  new IRCObservable();
+        irc.setServer(server);
+        irc.setPort(port);
+        irc.setNickname(nickname);
+        irc.start();
+    }
+
+    public static void disconnectIRC() {
+        irc.disconnect();
+    }
+
+    public static void sendMessageIRC(String channel, String message) {
+        irc.sendMessage(channel, message);
     }
 
 }

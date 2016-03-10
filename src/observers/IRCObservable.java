@@ -251,6 +251,8 @@ public class IRCObservable extends Thread {
     }
 
     public void disconnect() {
+        if (!isConnected) return;
+        isConnected = false;
         try {
             writer.close();
             reader.close();
@@ -259,6 +261,7 @@ public class IRCObservable extends Thread {
             e.printStackTrace();
             System.out.println("ERROR: Failed to close socket.");
         }
+        System.out.println("Disconnected.");
     }
 
     public boolean isConnected() {
